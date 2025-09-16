@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
+import java.util.concurrent.ConcurrentMap;
+
 public class WheelCommands {
     public static Command getCollectCommands() {
         return new StartEndCommand(
@@ -33,6 +35,16 @@ public class WheelCommands {
                 )
 
         );
+
+    }
+
+    public static Command getStop() {
+        return new InstantCommand(
+                () -> CallWheel.wheel.stop(),
+                CallWheel.wheel
+        );
     }
 
 }
+
+
