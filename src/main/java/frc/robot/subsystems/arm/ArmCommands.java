@@ -1,24 +1,15 @@
-package frc.robot.subsystems.Wheel;
+package frc.robot.subsystems.arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import frc.robot.subsystems.Wheel.CallWheel;
 
-import java.util.concurrent.ConcurrentMap;
-
-public class WheelCommands {
+public class ArmCommands {
     public static Command getCollectCommands() {
         return new StartEndCommand(
                 () -> CallWheel.wheel.collect(),
-                () -> CallWheel.wheel.stop(),
-                CallWheel.wheel
-        );
-    }
-
-    public static Command getEjectCommands() {
-        return new StartEndCommand(
-                () -> CallWheel.wheel.eject(),
                 () -> CallWheel.wheel.stop(),
                 CallWheel.wheel
         );
@@ -35,16 +26,20 @@ public class WheelCommands {
                 )
 
         );
-
     }
 
-    public static Command getStop() {
-        return new InstantCommand(
+    public static Command getEjectCommands() {
+        return new StartEndCommand(
+                () -> CallWheel.wheel.eject(),
                 () -> CallWheel.wheel.stop(),
                 CallWheel.wheel
         );
     }
 
+    public static Command getTargetAngle() {
+        return new InstantCommand(
+                () -> CallArm.arm.setTargetAngle(),
+                CallArm.arm
+        );
+    }
 }
-
-
