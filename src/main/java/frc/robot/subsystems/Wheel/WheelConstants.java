@@ -11,28 +11,19 @@ import java.util.PrimitiveIterator;
 
 public class WheelConstants {
     private static final int MOTOR_ID = 1;
-
     static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
-
-    private static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
-
-    private static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
-
-    private static final double GEAR_RATIO = 1.5;
 
     static final double COLLECT = 1.0;
     static final double EJECT = -1.0;
     static final double STOP = 0.0;
-    static final StatusSignal<Angle> angle = MOTOR.getPosition();
+    static final StatusSignal<Angle> ANGLE = MOTOR.getPosition();
 
     static {
         TalonFXConfiguration config = new TalonFXConfiguration();
-        config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
-        config.MotorOutput.Inverted = INVERTED_VALUE;
-        config.MotorOutput.NeutralMode = NEUTRAL_MODE;
+        config.Feedback.SensorToMechanismRatio = 1.5;
+        config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         MOTOR.getConfigurator().apply(config);
-        angle.setUpdateFrequency(100);
+        ANGLE.setUpdateFrequency(100);
     }
-
-    
 }
