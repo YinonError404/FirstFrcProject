@@ -35,4 +35,13 @@ public class WheelCommands {
         );
     }
 
+    public static Command getStopCommand() {
+        return new StartEndCommand(
+                () -> CallWheel.wheel.stop(),
+                () -> {},
+                CallWheel.wheel
+
+        );
+    }
+
 }

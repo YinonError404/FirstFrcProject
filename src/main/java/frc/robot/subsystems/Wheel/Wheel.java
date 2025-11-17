@@ -13,7 +13,7 @@ public class Wheel extends SubsystemBase {
     private final TalonFX motor = WheelConstants.MOTOR;
 
     public double getAnglePosition() {
-        Angle converAngle = WheelConstants.angle.refresh().getValue();
+        Angle converAngle = WheelConstants.ANGLE.refresh().getValue();
         return converAngle.in(Degrees);
     }
 
@@ -34,6 +34,4 @@ public class Wheel extends SubsystemBase {
     public Wheel() {
     }
 
-    
 }
-
