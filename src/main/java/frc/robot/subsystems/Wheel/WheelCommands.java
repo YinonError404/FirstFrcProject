@@ -4,21 +4,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import frc.robot.RobotContainer;
 
 public class WheelCommands {
     public static Command getCollectCommands() {
         return new StartEndCommand(
-                () -> CallWheel.wheel.collect(),
-                () -> CallWheel.wheel.stop(),
-                CallWheel.wheel
+                () -> RobotContainer.WHEEL.collect(),
+                () -> RobotContainer.WHEEL.stop(),
+                RobotContainer.WHEEL
         );
     }
 
     public static Command getEjectCommands() {
         return new StartEndCommand(
-                () -> CallWheel.wheel.eject(),
-                () -> CallWheel.wheel.stop(),
-                CallWheel.wheel
+                () -> RobotContainer.WHEEL.eject(),
+                () -> RobotContainer.WHEEL.stop(),
+                RobotContainer.WHEEL
         );
     }
 
@@ -27,8 +28,8 @@ public class WheelCommands {
                 getCollectCommands().withTimeout(3),
                 getEjectCommands().withTimeout(3),
                 new InstantCommand(
-                        () -> CallWheel.wheel.stop(),
-                        CallWheel.wheel
+                        () -> RobotContainer.WHEEL.stop(),
+                        RobotContainer.WHEEL
 
                 )
 
@@ -37,9 +38,17 @@ public class WheelCommands {
 
     public static Command getStopCommand() {
         return new StartEndCommand(
-                () -> CallWheel.wheel.stop(),
+                () -> RobotContainer.WHEEL.stop(),
                 () -> {},
-                CallWheel.wheel
+                RobotContainer.WHEEL
+        );
+    }
+    
+    public static Command getStop() {
+        return new StartEndCommand(
+                () -> RobotContainer.WHEEL.stop(),
+                () -> {},
+                RobotContainer.WHEEL
 
         );
     }
