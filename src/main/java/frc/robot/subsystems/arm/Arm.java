@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
     private final TalonFX motor = ArmConstants.MOTOR;
-    private final CANcoder canCoder = ArmConstants.canCoder;
+    private final CANcoder encoder = ArmConstants.canCoder;
     private final PIDController pidController = ArmConstants.pid;
 
 
 
-    public void setTargetAngle(){
-        motor.set(pidController.calculate(canCoder.getPosition().getValueAsDouble(), 90));
+    public void setTargetAngle(double targetAngle){
+        motor.set(pidController.calculate(encoder.getPosition().getValueAsDouble(), targetAngle));
     }
 
 }

@@ -1,14 +1,14 @@
 package frc.robot.subsystems.arm;
 
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.subsystems.Wheel.CallWheel;
+import frc.robot.RobotContainer;
 
 public class ArmCommands {
-    public static Command getSetTargetAngleCommands() {
+    public static Command getSetTargetAngleCommand() {
         return new FunctionalCommand(
-                () -> CallArm.arm.setTargetAngle(),
-                () -> CallArm.arm.setTargetAngle(),
-                (Interrupted) ->
-                () ->
+                () -> //idk what to do here,
+                () -> //same here,
+                (Interrupted) ->//same here,
+                () ->//and same here
         );
     }

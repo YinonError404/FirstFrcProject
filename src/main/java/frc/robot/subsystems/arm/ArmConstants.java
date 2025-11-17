@@ -12,21 +12,17 @@ import edu.wpi.first.units.measure.Angle;
 
 public class ArmConstants {
     private static final int MOTOR_ID = 1;
-
     static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
 
     private static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
-
     private static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
-
     private static final double GEAR_RATIO = 1.5;
-
     public static final PIDController pid = new PIDController(0, 0, 0);
 
-    
+    private static final int CANCODER_ID = 1;
+    static final CANcoder CANCODER = new CANcoder(CANCODER_ID);
 
-
-    static {
+    private static void configMotor(){
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
         config.MotorOutput.Inverted = INVERTED_VALUE;
@@ -34,19 +30,17 @@ public class ArmConstants {
         MOTOR.getConfigurator().apply(config);
     }
 
-    static final double rest = 0.0;
-    
-
-    private static final int CanCoder_ID = 1;
-    static final CANcoder canCoder = new CANcoder(CanCoder_ID, "rio");
-
-
-
-    static{
-        CANcoderConfiguration configuration = new CANcoderConfiguration();
-
-        canCoder.getConfigurator().apply(configuration);
+    private static void configEncoder(){
+        CANcoderConfiguration config = new CANcoderConfiguration();
+        CANCODER.getConfigurator().apply(config);
     }
 
+    static {
+        configMotor();
+    }
+
+    static {
+        configEncoder();
+    }
 
 }
