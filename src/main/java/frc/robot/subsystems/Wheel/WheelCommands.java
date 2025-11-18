@@ -44,13 +44,4 @@ public class WheelCommands {
         );
     }
     
-    public static Command getStop() {
-        return new StartEndCommand(
-                () -> RobotContainer.WHEEL.stop(),
-                () -> {},
-                RobotContainer.WHEEL
-
-        );
-    }
-
 }
