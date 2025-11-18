@@ -10,7 +10,7 @@ public class Arm extends SubsystemBase {
     private final CANcoder encoder = ArmConstants.CANCODER;
     private final PIDController pidController = ArmConstants.pid;
 
-    public void setTargetAngle(double targetAngle){
+    public void getSetTargetAngle(double targetAngle){
         motor.set(pidController.calculate(encoder.getPosition().getValueAsDouble(), targetAngle));
     }
 
