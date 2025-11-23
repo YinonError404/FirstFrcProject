@@ -13,11 +13,10 @@ import edu.wpi.first.units.measure.Angle;
 public class ArmConstants {
     private static final int MOTOR_ID = 1;
     static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
-
-    private static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
-    private static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
-    private static final double GEAR_RATIO = 1.5;
-    public static final PIDController pid = new PIDController(0, 0, 0);
+    static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
+    static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
+    static final double GEAR_RATIO = 1.5;
+    static final PIDController pid = new PIDController(0, 0, 0);
 
     private static final int CANCODER_ID = 1;
     static final CANcoder CANCODER = new CANcoder(CANCODER_ID);
