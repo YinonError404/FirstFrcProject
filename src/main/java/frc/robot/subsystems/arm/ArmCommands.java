@@ -6,10 +6,11 @@ import frc.robot.RobotContainer;
 public class ArmCommands {
     public static Command getSetTargetAngleCommand(double targetAngle) {
         return new FunctionalCommand(
-                () -> RobotContainer.ARM.getSetTargetAngle(targetAngle),
-                () ->
-                (Interrupted) ->
-                () ->
+                () -> RobotContainer.ARM.setTargetAngle(targetAngle),
+                () -> RobotContainer.ARM.setTargetAngle(targetAngle),
+                (Interrupted) -> RobotContainer.ARM.stop(),
+                () -> false,
                 RobotContainer.ARM
         );
     }
+}

@@ -20,13 +20,14 @@ public class Arm extends SubsystemBase {
 
     }
 
+    public void setTargetAngle(double targetAngle) {
+        sendPower(pidPowerCalculate(targetAngle));
 
-    public void getSetTargetAngle(double targetAngle) {
-        
+
     }
 
     public double pidPowerCalculate(double setPoint) {
-        return ArmConstants.pid.calculate(getPosition(), pidController.getSetpoint());
+        return pidController.calculate(getPosition(), setPoint);
     }
 
     public double getPosition() {
