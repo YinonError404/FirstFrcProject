@@ -2,24 +2,43 @@ package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.units.PerUnit;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
     private final TalonFX motor = ArmConstants.MOTOR;
     private final CANcoder encoder = ArmConstants.CANCODER;
     private final PIDController pidController = ArmConstants.pid;
+    private final VoltageOut  voltageRequest =  new VoltageOut(0).withEnableFOC(ArmConstants.FOC_ENABLED);
 
-    public Arm(){
-
-    }
-
-    public static void getSetTargetAngle(double targetAngle){
+    public Arm() {
 
     }
 
-    
+
+    public void getSetTargetAngle(double targetAngle) {
+        
+    }
+
+    public double pidPowerCalculate(double setPoint) {
+        return ArmConstants.pid.calculate(getPosition(), pidController.getSetpoint());
+    }
+
+    public double getPosition() {
+        return ArmConstants.ANGLE_STATUS_SIGNAL.refresh().getValueAsDouble();
+    }
+
+    public void sendPower(double voltage) {
+        motor.setControl(voltageRequest.withOutput(voltage));
+    }
+
+    void stop() {
+        motor.stopMotor();
+    }
 
 }

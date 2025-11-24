@@ -18,10 +18,14 @@ public class ArmConstants {
     static final double GEAR_RATIO = 1.5;
     static final PIDController pid = new PIDController(0, 0, 0);
 
+    static final boolean FOC_ENABLED = true;
+
     private static final int CANCODER_ID = 1;
     static final CANcoder CANCODER = new CANcoder(CANCODER_ID);
 
-    private static void configMotor(){
+    static final StatusSignal<Angle> ANGLE_STATUS_SIGNAL = CANCODER.getPosition();
+
+    private static void configMotor() {
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
         config.MotorOutput.Inverted = INVERTED_VALUE;
@@ -29,7 +33,7 @@ public class ArmConstants {
         MOTOR.getConfigurator().apply(config);
     }
 
-    private static void configEncoder(){
+    private static void configEncoder() {
         CANcoderConfiguration config = new CANcoderConfiguration();
         CANCODER.getConfigurator().apply(config);
     }
