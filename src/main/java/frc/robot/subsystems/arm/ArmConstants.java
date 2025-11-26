@@ -13,10 +13,10 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Angle;
 
 public class ArmConstants {
-    private static final int MOTOR_ID = 1;
-    static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
     private static final int ENCODER_ID = 1;
+    private static final int MOTOR_ID = 1;
     static final CANcoder ENCODER = new CANcoder(ENCODER_ID);
+    static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
 
     static final PIDController PID_CONTROLLER = new PIDController(0, 0, 0);
     static final boolean FOC_ENABLED = true;
@@ -45,5 +45,4 @@ public class ArmConstants {
         ANGLE_STATUS_SIGNAL.setUpdateFrequency(100);
         ENCODER.optimizeBusUtilization();
     }
-
 }

@@ -37,5 +37,4 @@ public class Arm extends SubsystemBase {
     void stop() {
         motor.stopMotor();
     }
-
 }
