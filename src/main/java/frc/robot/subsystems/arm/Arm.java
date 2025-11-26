@@ -12,18 +12,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
     private final TalonFX motor = ArmConstants.MOTOR;
-    private final CANcoder encoder = ArmConstants.CANCODER;
     private final PIDController pidController = ArmConstants.pid;
-    private final VoltageOut  voltageRequest =  new VoltageOut(0).withEnableFOC(ArmConstants.FOC_ENABLED);
+    private final VoltageOut voltageRequest = new VoltageOut(0).withEnableFOC(ArmConstants.FOC_ENABLED);
 
     public Arm() {
-
     }
 
     public void setTargetAngle(double targetAngle) {
         sendPower(pidPowerCalculate(targetAngle));
-
-
     }
 
     public double pidPowerCalculate(double setPoint) {

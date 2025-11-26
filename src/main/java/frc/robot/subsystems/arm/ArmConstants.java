@@ -2,11 +2,13 @@ package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Angle;
 
@@ -20,10 +22,15 @@ public class ArmConstants {
 
     static final boolean FOC_ENABLED = true;
 
-    private static final int CANCODER_ID = 1;
-    static final CANcoder CANCODER = new CANcoder(CANCODER_ID);
+    private static final int ENCODER_ID = 1;
+    static final CANcoder ENCODER = new CANcoder(ENCODER_ID);
 
-    static final StatusSignal<Angle> ANGLE_STATUS_SIGNAL = CANCODER.getPosition();
+    static final StatusSignal<Angle> ANGLE_STATUS_SIGNAL = ENCODER.getPosition();
+
+    static {
+        configMotor();
+        configEncoder();
+    }
 
     private static void configMotor() {
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -31,19 +38,17 @@ public class ArmConstants {
         config.MotorOutput.Inverted = INVERTED_VALUE;
         config.MotorOutput.NeutralMode = NEUTRAL_MODE;
         MOTOR.getConfigurator().apply(config);
+        MOTOR.optimizeBusUtilization();
     }
 
     private static void configEncoder() {
         CANcoderConfiguration config = new CANcoderConfiguration();
-        CANCODER.getConfigurator().apply(config);
-    }
-
-    static {
-        configMotor();
-    }
-
-    static {
-        configEncoder();
+        config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
+        config.MagnetSensor.MagnetOffset = 0;
+        ENCODER.getConfigurator().apply(config);
+        ANGLE_STATUS_SIGNAL.setUpdateFrequency(100);
+        ENCODER.optimizeBusUtilization();
     }
 
 }
