@@ -15,16 +15,11 @@ import edu.wpi.first.units.measure.Angle;
 public class ArmConstants {
     private static final int MOTOR_ID = 1;
     static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
-    static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
-    static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
-    static final double GEAR_RATIO = 1.5;
-    static final PIDController pid = new PIDController(0, 0, 0);
-
-    static final boolean FOC_ENABLED = true;
-
     private static final int ENCODER_ID = 1;
     static final CANcoder ENCODER = new CANcoder(ENCODER_ID);
 
+    static final PIDController PID_CONTROLLER = new PIDController(0, 0, 0);
+    static final boolean FOC_ENABLED = true;
     static final StatusSignal<Angle> ANGLE_STATUS_SIGNAL = ENCODER.getPosition();
 
     static {
@@ -34,9 +29,9 @@ public class ArmConstants {
 
     private static void configMotor() {
         TalonFXConfiguration config = new TalonFXConfiguration();
-        config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
-        config.MotorOutput.Inverted = INVERTED_VALUE;
-        config.MotorOutput.NeutralMode = NEUTRAL_MODE;
+        config.Feedback.SensorToMechanismRatio = 1.5;
+        config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         MOTOR.getConfigurator().apply(config);
         MOTOR.optimizeBusUtilization();
     }
