@@ -15,10 +15,10 @@ public class ArmCommands {
         );
     }
 
-    public static Command getSetStateCommand(ArmConstants.ArmState armState) {
+    public static Command getSetTargetStateCommand(ArmConstants.ArmState targetState) {
         return new FunctionalCommand(
-                () -> RobotContainer.ARM.setTargetState(armState),
-                () -> RobotContainer.ARM.setTargetState(armState),
+                () -> RobotContainer.ARM.setTargetState(targetState),
+                () -> RobotContainer.ARM.setTargetState(targetState),
                 (Interrupted) -> RobotContainer.ARM.stop(),
                 () -> false,
                 RobotContainer.ARM

@@ -13,8 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 
 public class ArmConstants {
-    private static final int ENCODER_ID = 1;
-    private static final int MOTOR_ID = 1;
+    private static final int ENCODER_ID = 1, MOTOR_ID = 1;
     static final CANcoder ENCODER = new CANcoder(ENCODER_ID);
     static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
 
@@ -47,14 +46,14 @@ public class ArmConstants {
     }
 
     public enum ArmState {
-        HIGH_STATE(Rotation2d.fromDegrees(167)),
-        LOW_STATE(Rotation2d.fromDegrees(67)),
-        REST(Rotation2d.fromDegrees(0));
+        HIGH_STATE(Rotation2d.fromRadians(167)),
+        LOW_STATE(Rotation2d.fromRadians(67)),
+        REST(Rotation2d.fromRadians(0));
 
-        public final Rotation2d armPositionDegrees;
+        public final Rotation2d targetAngle;
 
-        ArmState(Rotation2d armPositionDegrees) {
-            this.armPositionDegrees = armPositionDegrees;
+        ArmState(Rotation2d targetAngle) {
+            this.targetAngle = targetAngle;
         }
     }
 }
