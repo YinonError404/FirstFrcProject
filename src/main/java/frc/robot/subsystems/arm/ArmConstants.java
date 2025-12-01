@@ -45,4 +45,16 @@ public class ArmConstants {
         ANGLE_STATUS_SIGNAL.setUpdateFrequency(100);
         ENCODER.optimizeBusUtilization();
     }
+
+    public enum ArmState {
+        high(167),
+        low(67),
+        rest(0);
+
+        public final double armPositionDegrees;
+
+        ArmState(double armPositionDegrees) {
+            this.armPositionDegrees = armPositionDegrees;
+        }
+    }
 }
