@@ -15,24 +15,24 @@ public class Arm extends SubsystemBase {
     }
 
     void setTargetState(ArmConstants.ArmState targetState) {
-        setTargetAngle((targetState.armPositionDegrees));
+        setTargetAngle(targetState.targetAngle);
     }
 
     void setTargetAngle(Rotation2d targetAngle) {
         setTargetVoltage(calculatePIDOutput(targetAngle));
     }
 
-    Rotation2d getCurrentAngle() {
-        double rotations = ArmConstants.ANGLE_STATUS_SIGNAL.refresh().getValueAsDouble();
-        return Rotation2d.fromRotations(rotations);
-    }
-    
     void stop() {
         motor.stopMotor();
     }
 
     private double calculatePIDOutput(Rotation2d targetAngle) {
         return pidController.calculate(getCurrentAngle().getRotations(), targetAngle.getRotations());
+    }
+
+    private Rotation2d getCurrentAngle() {
+        double rotations = ArmConstants.ANGLE_STATUS_SIGNAL.refresh().getValueAsDouble();
+        return Rotation2d.fromRotations(rotations);
     }
 
     private void setTargetVoltage(double voltage) {

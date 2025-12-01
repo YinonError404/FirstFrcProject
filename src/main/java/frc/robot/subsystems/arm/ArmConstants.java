@@ -46,9 +46,9 @@ public class ArmConstants {
     }
 
     public enum ArmState {
-        HIGH_STATE(Rotation2d.fromRadians(167)),
-        LOW_STATE(Rotation2d.fromRadians(67)),
-        REST(Rotation2d.fromRadians(0));
+        HIGH_STATE(Rotation2d.fromDegrees(167)),
+        LOW_STATE(Rotation2d.fromDegrees(67)),
+        REST(Rotation2d.fromDegrees(0));
 
         public final Rotation2d targetAngle;
 
