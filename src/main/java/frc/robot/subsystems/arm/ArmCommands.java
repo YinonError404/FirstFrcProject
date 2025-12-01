@@ -4,14 +4,20 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.RobotContainer;
 
 public class ArmCommands {
-    public static Command getSetArmStateCommand(ArmConstants.ArmState state) {
-        return new InstantCommand(() -> RobotContainer.ARM.setTargetState(state));
-    }
-
     public static Command getSetTargetAngleCommand(double targetAngle) {
         return new FunctionalCommand(
                 () -> RobotContainer.ARM.setTargetAngle(targetAngle),
                 () -> RobotContainer.ARM.setTargetAngle(targetAngle),
+                (Interrupted) -> RobotContainer.ARM.stop(),
+                () -> false,
+                RobotContainer.ARM
+        );
+    }
+
+    public static Command getSetStateCommand(ArmConstants.ArmState armState) {
+        return new FunctionalCommand(
+                () -> RobotContainer.ARM.setTargetState(armState),
+                () -> RobotContainer.ARM.setTargetState(armState),
                 (Interrupted) -> RobotContainer.ARM.stop(),
                 () -> false,
                 RobotContainer.ARM
