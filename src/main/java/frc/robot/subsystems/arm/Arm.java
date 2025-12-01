@@ -23,15 +23,11 @@ public class Arm extends SubsystemBase {
     }
 
     private double calculatePIDOutput(Rotation2d targetAngle) {
-        return pidController.calculate(getCurrentPositionRotations(), targetAngle.getRotations());
-    }
-
-    private double getCurrentPositionRotations() {
-        return ArmConstants.ANGLE_STATUS_SIGNAL.refresh().getValueAsDouble();
+        return pidController.calculate(getCurrentAngle().getRotations(), targetAngle.getRotations());
     }
 
     public Rotation2d getCurrentAngle() {
-        double rotations = getCurrentPositionRotations();
+        double rotations = ArmConstants.ANGLE_STATUS_SIGNAL.refresh().getValueAsDouble();
         return Rotation2d.fromRotations(rotations);
     }
 
