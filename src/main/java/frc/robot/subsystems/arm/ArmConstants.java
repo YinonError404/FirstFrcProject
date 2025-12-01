@@ -2,7 +2,6 @@ package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -10,6 +9,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 
 public class ArmConstants {
@@ -47,13 +47,13 @@ public class ArmConstants {
     }
 
     public enum ArmState {
-        high(167),
-        low(67),
-        rest(0);
+        HIGH_STATE(Rotation2d.fromDegrees(167)),
+        LOW_STATE(Rotation2d.fromDegrees(67)),
+        REST(Rotation2d.fromDegrees(0));
 
-        public final double armPositionDegrees;
+        public final Rotation2d armPositionDegrees;
 
-        ArmState(double armPositionDegrees) {
+        ArmState(Rotation2d armPositionDegrees) {
             this.armPositionDegrees = armPositionDegrees;
         }
     }
