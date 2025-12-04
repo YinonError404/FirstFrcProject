@@ -1,6 +1,6 @@
 package frc.robot.subsystems.tank;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Tank extends SubsystemBase {

@@ -23,8 +23,8 @@ public class RobotContainer {
     private void bindDefaultCommands() {
         tank.setDefaultCommand(
                 TankCommands.getSetArcadeDriveCommand(
-                        () -> modifyStick(-driverController.getRightY()),
-                        () -> modifyStick(-driverController.getLeftX())
+                        () -> modifyStick(-driverController.getLeftY()),
+                        () -> modifyStick(driverController.getRightX())
                 )
         );
     }
