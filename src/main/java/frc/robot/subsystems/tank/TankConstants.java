@@ -47,8 +47,8 @@ public class TankConstants {
         RIGHT_MOTOR_2.enableVoltageCompensation(true);
         RIGHT_MOTOR_1.configVoltageCompSaturation(VOLTAGE_LIMIT);
         RIGHT_MOTOR_2.configVoltageCompSaturation(VOLTAGE_LIMIT);
-        RIGHT_MOTOR_1.setInverted(LEFT_MOTOR_1_INVERTED_VALUE);
-        RIGHT_MOTOR_2.setInverted(LEFT_MOTOR_2_INVERTED_VALUE);
+        RIGHT_MOTOR_1.setInverted(RIGHT_MOTOR_1_INVERTED_VALUE);
+        RIGHT_MOTOR_2.setInverted(RIGHT_MOTOR_2_INVERTED_VALUE);
         RIGHT_MOTOR_2.follow(RIGHT_MOTOR_1,FollowerType.PercentOutput);
     }
 }
