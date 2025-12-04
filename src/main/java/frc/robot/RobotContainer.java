@@ -23,8 +23,8 @@ public class RobotContainer {
     private void bindDefaultCommands() {
         tank.setDefaultCommand(
                 TankCommands.getSetArcadeDriveCommand(
-                        () -> -driverController.getRightY(),
-                        () -> -driverController.getLeftX()
+                        () -> modifyStick(-driverController.getRightY()),
+                        () -> modifyStick(-driverController.getLeftX())
                 )
         );
     }
@@ -36,10 +36,7 @@ public class RobotContainer {
         return Commands.print("No autonomous command configured");
     }
 
-    private double calculateDriveSpeed(double stickMovement) {
-        final double squaredShiftModeValue = driverController.getRightTriggerAxis();
-        final double minimumShiftValueCoefficient = -1;
-        final double speed = 1 - squaredShiftModeValue * minimumShiftValueCoefficient;
-        return stickMovement / speed;
+    private double modifyStick(double stickValue) {
+        return Math.copySign(stickValue * stickValue, stickValue);
     }
 }
