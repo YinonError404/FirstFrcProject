@@ -9,6 +9,8 @@ import frc.robot.subsystems.tank.TankCommands;
 public class RobotContainer {
     private final CommandXboxController driverController =
             new CommandXboxController(0);
+    private final double MAX_DRIVE_SPEED = 0.67;
+    private final double MAX_ROTATION_SPEED = 0.42;
     private final Tank tank = Tank.getTank();
 
     public RobotContainer() {
@@ -23,8 +25,8 @@ public class RobotContainer {
     private void bindDefaultCommands() {
         tank.setDefaultCommand(
                 TankCommands.getSetArcadeDriveCommand(
-                        () -> modifyStick(-driverController.getLeftY()),
-                        () -> modifyStick(driverController.getRightX())
+                        () -> modifyStick(-driverController.getLeftY()) * MAX_DRIVE_SPEED,
+                        () -> modifyStick(driverController.getRightX()) * MAX_ROTATION_SPEED
                 )
         );
     }
