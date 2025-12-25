@@ -12,19 +12,11 @@ public class Arm extends SubsystemBase {
     private final TalonFX motor = ArmConstants.MOTOR;
     private final PIDController pidController = ArmConstants.PID_CONTROLLER;
     private final VoltageOut voltageRequest = new VoltageOut(0).withEnableFOC(ArmConstants.FOC_ENABLED);
-    private TrapezoidProfile profile = new TrapezoidProfile(ArmConstants.ANGLE_CONSTRAINTS);
+
+    private TrapezoidProfile angleMotorProfile = null;
     private double lastAngleMotorProfileGenerationTime;
 
     public Arm() {
-    }
-
-    private void generateAngleMotorProfile(Rotation2d targetAngle) {
-        profile = new TrapezoidProfile(ArmConstants.ANGLE_CONSTRAINTS);
-        lastAngleMotorProfileGenerationTime = Timer.getFPGATimestamp();
-    }
-
-    private double getProfileTime() {
-        return Timer.getFPGATimestamp() - lastAngleMotorProfileGenerationTime;
     }
 
     void setTargetState(ArmConstants.ArmState targetState) {
@@ -39,6 +31,10 @@ public class Arm extends SubsystemBase {
         motor.stopMotor();
     }
 
+    void setTargetAngleWithProfile(Rotation2d targetAngle) {
+        TrapezoidProfile.State currentState = new TrapezoidProfile.State(getCurrentAngle().getRotations(), 0);
+    }
+
     private double calculatePIDOutput(Rotation2d targetAngle) {
         return pidController.calculate(getCurrentAngle().getRotations(), targetAngle.getRotations());
     }
@@ -48,7 +44,24 @@ public class Arm extends SubsystemBase {
         return Rotation2d.fromRotations(rotations);
     }
 
+    private double getAngleMotorProfileTime() {
+        return Timer.getFPGATimestamp() - lastAngleMotorProfileGenerationTime;
+    }
+
     private void setTargetVoltage(double voltage) {
         motor.setControl(voltageRequest.withOutput(voltage));
     }
+
+    void generateProfile(Rotation2d targetAngle) {
+        angleMotorProfile = new TrapezoidProfile(
+                ArmConstants.CONSTRAINTS,
+                new TrapezoidProfile.State(targetAngle.getDegrees(), 0),
+                new TrapezoidProfile.State(getCurrentAngle().getDegrees(), getAngleMotorVelocityRotationsPerSecond())
+        );
+
+        lastAngleMotorProfileGenerationTime = Timer.getFPGATimestamp();
+    }
+}
+
+
 }

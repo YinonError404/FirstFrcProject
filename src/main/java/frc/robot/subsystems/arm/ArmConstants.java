@@ -9,6 +9,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
@@ -22,10 +23,16 @@ public class ArmConstants {
     static final boolean FOC_ENABLED = true;
     static final StatusSignal<Angle> ANGLE_STATUS_SIGNAL = ENCODER.getPosition();
 
-    static final TrapezoidProfile.Constraints PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(0, 0);
-    static final TrapezoidProfile.State TARGET_STATE = new TrapezoidProfile.State(0, 0);
-    static final TrapezoidProfile PROFILE = new TrapezoidProfile(PROFILE_CONSTRAINTS);
-    static final TrapezoidProfile
+    private static final double
+            MAX_VELOCITY = 0,
+            MAX_ACCELERATION = 0;
+
+    static final TrapezoidProfile.Constraints CONSTRAINTS = new TrapezoidProfile.Constraints(
+            MAX_VELOCITY,
+            MAX_ACCELERATION
+    );
+
+    static final ProfiledPIDController PROFILED_PID_CONTROLLER = new ProfiledPIDController(0, 0, 0, CONSTRAINTS);
 
     static {
         configMotor();
