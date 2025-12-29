@@ -32,8 +32,6 @@ public class ArmConstants {
             MAX_ACCELERATION
     );
 
-    static final ProfiledPIDController PROFILED_PID_CONTROLLER = new ProfiledPIDController(0, 0, 0, CONSTRAINTS);
-
     static {
         configMotor();
         configEncoder();
