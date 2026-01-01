@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,18 +20,28 @@ public class ArmConstants {
     static final CANcoder ENCODER = new CANcoder(ENCODER_ID);
     static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
 
-    static final PIDController PID_CONTROLLER = new PIDController(0, 0, 0);
     static final boolean FOC_ENABLED = true;
     static final StatusSignal<Angle> ANGLE_STATUS_SIGNAL = ENCODER.getPosition();
 
     private static final double
-            MAX_VELOCITY = 0,
-            MAX_ACCELERATION = 0;
-
+            MAX_VELOCITY = 5,
+            MAX_ACCELERATION = 3;
     static final TrapezoidProfile.Constraints CONSTRAINTS = new TrapezoidProfile.Constraints(
             MAX_VELOCITY,
             MAX_ACCELERATION
     );
+
+    private static final double
+            P = 0,
+            I = 0,
+            D = 0,
+            KS = 0,
+            KV = 0,
+            KA = 0;
+    static final PIDController PID_CONTROLLER = new PIDController(P, I, D);
+    static final ArmFeedforward FEEDFORWARD = new ArmFeedforward(KS, KV, KA);
+
+    static final Rotation2d TOLERANCE = Rotation2d.fromDegrees(2);
 
     static {
         configMotor();
@@ -38,7 +49,7 @@ public class ArmConstants {
     }
 
     private static void configMotor() {
-        TalonFXConfiguration config = new TalonFXConfiguration();
+        final TalonFXConfiguration config = new TalonFXConfiguration();
         config.Feedback.SensorToMechanismRatio = 1.5;
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
@@ -47,7 +58,7 @@ public class ArmConstants {
     }
 
     private static void configEncoder() {
-        CANcoderConfiguration config = new CANcoderConfiguration();
+        final CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
         config.MagnetSensor.MagnetOffset = 0;

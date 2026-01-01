@@ -3,6 +3,7 @@ package frc.robot.subsystems.arm;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
@@ -13,63 +14,69 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public class Arm extends SubsystemBase {
     private final TalonFX motor = ArmConstants.MOTOR;
     private final PIDController pidController = ArmConstants.PID_CONTROLLER;
+    private final ArmFeedforward feedforward = ArmConstants.FEEDFORWARD;
     private final VoltageOut voltageRequest = new VoltageOut(0).withEnableFOC(ArmConstants.FOC_ENABLED);
     private final CANcoder encoder = ArmConstants.ENCODER;
-    private TrapezoidProfile profile = new TrapezoidProfile(ArmConstants.CONSTRAINTS);
+    private final TrapezoidProfile profile = new TrapezoidProfile(ArmConstants.CONSTRAINTS);
     private TrapezoidProfile.State goalState = new TrapezoidProfile.State();
-    private TrapezoidProfile.State setpointState = new TrapezoidProfile.State();
     private TrapezoidProfile.State initialState = new TrapezoidProfile.State();
     private final Timer profileTimer = new Timer();
 
     public Arm() {
-        profileTimer.reset();
-        profileTimer.start();
     }
 
-    void setTargetState(ArmConstants.ArmState targetState) {
-        setTargetAngle(targetState.targetAngle);
+    public boolean atState(ArmConstants.ArmState targetState) {
+        Rotation2d currentAngle = getCurrentAngle();
+        Rotation2d targetAngle = targetState.targetAngle;
+
+        return Math.abs(
+                currentAngle.minus(targetAngle).getRotations()
+        ) <= ArmConstants.TOLERANCE.getRotations();
     }
 
-    void setTargetAngle(Rotation2d targetAngle) {
-        setTargetVoltage(calculatePIDOutput(targetAngle));
+    void followSetpoint(Rotation2d setpoint) {
+        final double pidOutput = calculatePIDOutput(setpoint);
+        final double ffOutput = calculateFeedForward();
+        setTargetVoltage(pidOutput + ffOutput);
     }
 
     void stop() {
         motor.stopMotor();
     }
 
-    void startMotionProfile(double targetPosition) {
+    void initializeMotionProfile(Rotation2d targetPosition) {
         initialState = new TrapezoidProfile.State(
                 getCurrentAngle().getRotations(),
-                0
+                encoder.getVelocity().getValueAsDouble()
         );
 
-        goalState = new TrapezoidProfile.State(targetPosition, 0);
+        goalState = new TrapezoidProfile.State(targetPosition.getRotations(), 0);
 
-        profileTimer.reset();
+        profileTimer.restart();
     }
 
-    public void updateMotionProfile() {
-        setpointState = profile.calculate(
-                profileTimer.get(),
-                initialState,
-                goalState
-        );
+    void followMotionProfile() {
+        final TrapezoidProfile.State setpoint = calculateSetpoint();
+        final Rotation2d setpointAsRotation = Rotation2d.fromRotations(setpoint.position);
+        followSetpoint(setpointAsRotation);
+    }
 
-        double output = pidController.calculate(
-                getCurrentAngle().getRotations(),
-                setpointState.position
-        );
-
-        setTargetVoltage(output);
+    private TrapezoidProfile.State calculateSetpoint() {
+        return profile.calculate(profileTimer.get(), initialState, goalState);
     }
 
     private double calculatePIDOutput(Rotation2d targetAngle) {
         return pidController.calculate(getCurrentAngle().getRotations(), targetAngle.getRotations());
     }
 
+    private double calculateFeedForward() {
+        double position = getCurrentAngle().getRotations();
+        double velocity = 0;
+        return feedforward.calculate(position, velocity);
+    }
+
     private Rotation2d getCurrentAngle() {
-        double rotations = ArmConstants.ANGLE_STATUS_SIGNAL.refresh().getValueAsDouble();
+        final double rotations = ArmConstants.ANGLE_STATUS_SIGNAL.refresh().getValueAsDouble();
         return Rotation2d.fromRotations(rotations);
     }
 
